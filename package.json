@@ -1,0 +1,27 @@
+{
+	"name": "sunrintoday",
+	"version": "1.0.0",
+	"description": "Sunrin Today CLI",
+	"main": "src/index.ts",
+	"license": "MIT",
+	"scripts": {
+		"build": "tsc",
+		"cli": "node src/index.js"
+	},
+	"bin": {
+		"sunrintoday": "src/index.ts"
+	},
+	"devDependencies": {
+		"@types/commander": "^2.12.5",
+		"@types/figlet": "^1.7.0",
+		"@types/node": "^22.10.1",
+		"typescript": "^5.7.2"
+	},
+	"dependencies": {
+		"@types/chalk": "^2.2.4",
+		"@types/inquirer": "^9.0.7",
+		"chalk": "4.1.0",
+		"commander": "^12.1.0",
+		"inquirer": "^12.1.0"
+	}
+}
