@@ -254,7 +254,7 @@ domainCommand
 async function isExistDomainName(name: string): Promise<boolean> {
 	return new Promise((resolve) => {
 		setTimeout(() => {
-			resolve(true);
+			resolve(false);
 		}, 1000);
 	});
 }

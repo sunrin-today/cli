@@ -1,15 +1,36 @@
 {
-	"name": "sunrintoday",
+	"name": "@sunrintoday/cli",
 	"version": "1.0.0",
 	"description": "Sunrin Today CLI",
 	"main": "src/index.ts",
 	"license": "MIT",
+	"files": [
+		"dist"
+	],
 	"scripts": {
 		"build": "tsc",
-		"cli": "node src/index.js"
+		"prepublishOnly": "yarn build",
+		"cli": "node dist/index.js"
+	},
+	"keywords": [
+		"sunrin",
+		"today",
+		"sunrintoday",
+		"cli"
+	],
+	"author": "Jeewon Kwon - jeewon.kwon.0817@gmail.com",
+	"bugs": {
+		"url": "https://github.com/sunrin-today/cli/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/sunrin-today/cli.git"
 	},
 	"bin": {
-		"sunrintoday": "src/index.ts"
+		"sunrintoday": "dist/index.js"
+	},
+	"publishConfig": {
+		"access": "public"
 	},
 	"devDependencies": {
 		"@types/commander": "^2.12.5",
