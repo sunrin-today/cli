@@ -1,6 +1,6 @@
 {
 	"name": "@sunrintoday/cli",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Sunrin Today CLI",
 	"main": "src/index.ts",
 	"license": "MIT",
