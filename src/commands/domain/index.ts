@@ -5,6 +5,7 @@ import { isProxiedInquirer, priorityInquirer, ttlInquirer, weightInquirer } from
 import { isFQDN, isFQDNOrEmpty, isIpv4Address, isIpv6Address } from './validation';
 
 const chalk = require('chalk');
+const ora = require('ora');
 
 const domainCommand = new Command('domain');
 
@@ -24,14 +25,19 @@ domainCommand
 	.command('register')
 	.argument('<name>', 'Domain name')
 	.action(async () => {
-		console.log(`${ chalk.bgHex('#FFA500').whiteBright.bold(' LOADING ') } 도메인이 유효한지 확인하는 중...`);
+		// console.log(`${ chalk.bgHex('#FFA500').whiteBright.bold(' LOADING ') } 도메인이 유효한지 확인하는 중...`);
+
+		const spinner = ora('도메인이 유효한지 확인하는 중...').start();
 
 		const isExist = await isExistDomainName('test.com');
 
 		if (isExist) {
-			console.log(`${ chalk.bgRed.whiteBright.bold(' ERROR ') } 이미 존재하는 도메인입니다.`);
+			// console.log(`${ chalk.bgRed.whiteBright.bold(' ERROR ') } 이미 존재하는 도메인입니다.`);
+			spinner.fail('이미 존재하는 도메인입니다.');
 			return;
 		}
+
+		spinner.succeed('도메인이 유효한지 확인되었습니다.');
 
 		const response = await inquirer.prompt<DomainResponse>([
 			{
@@ -42,7 +48,7 @@ domainCommand
 			},
 		]);
 
-		let parameters;
+		let parameters: any;
 
 		switch (response.type) {
 			case DomainType.A:
@@ -56,6 +62,14 @@ domainCommand
 					},
 					isProxiedInquirer,
 				]);
+
+				if (!parameters.isProxied) {
+					const res = await inquirer.prompt([
+						ttlInquirer,
+					]);
+					parameters.ttl = res.ttl;
+				}
+
 				break;
 
 			case DomainType.AAAA:
@@ -69,6 +83,14 @@ domainCommand
 					},
 					isProxiedInquirer,
 				]);
+
+				if (!parameters.isProxied) {
+					const res = await inquirer.prompt([
+						ttlInquirer,
+					]);
+					parameters.ttl = res.ttl;
+				}
+
 				break;
 
 			case DomainType.CAA:
@@ -113,6 +135,14 @@ domainCommand
 					},
 					isProxiedInquirer,
 				]);
+
+				if (!parameters.isProxied) {
+					const res = await inquirer.prompt([
+						ttlInquirer,
+					]);
+					parameters.ttl = res.ttl;
+				}
+
 				break;
 
 			case DomainType.DS:
@@ -222,6 +252,7 @@ domainCommand
 
 			case DomainType.TXT:
 				parameters = await inquirer.prompt([
+					ttlInquirer,
 					{
 						type: 'input',
 						name: 'content',
@@ -248,14 +279,27 @@ domainCommand
 				break;
 		}
 
-		console.log(response, parameters);
+		const confirmResponse = await inquirer.prompt([
+			{
+				type: 'confirm',
+				name: 'confirm',
+				message: '이대로 등록하시겠습니까?',
+				default: true,
+			},
+		]);
+
+		if (confirmResponse.confirm) {
+			console.log(response, parameters);
+		} else {
+			console.log('취소되었습니다.');
+		}
 	});
 
 async function isExistDomainName(name: string): Promise<boolean> {
 	return new Promise((resolve) => {
 		setTimeout(() => {
 			resolve(false);
-		}, 1000);
+		}, 3000);
 	});
 }
 

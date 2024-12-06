@@ -43,6 +43,7 @@
 		"@types/inquirer": "^9.0.7",
 		"chalk": "4.1.0",
 		"commander": "^12.1.0",
-		"inquirer": "^12.1.0"
+		"inquirer": "^12.1.0",
+		"ora": "5.4.1"
 	}
 }
